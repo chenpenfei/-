@@ -11,51 +11,54 @@
         <mapTab v-if="houseDetails" :lat="houseDetails.jibenxinxi.lat" :log="houseDetails.jibenxinxi.log"></mapTab>
     </div>
 </template>
-<script>    import breadcrumb from '~/components/secondHand/breadcrumb'
-import collect from '~/components/secondHand/collect'
-import baseMsg from '~/components/secondHand/baseMsg'
-import mapTab from '~/components/secondHand/mapTab'
-import api from '~/api'
-import axios from '~/plugins/axios'
-import {mapMutations, mapState} from 'vuex'
+<script>
+    import breadcrumb from '~/components/secondHand/breadcrumb'
+    import collect from '~/components/secondHand/collect'
+    import baseMsg from '~/components/secondHand/baseMsg'
+    import mapTab from '~/components/secondHand/mapTab'
+    import api from '~/api'
+    import axios from '~/plugins/axios'
+    import {mapMutations, mapState} from 'vuex'
 
-export default {
-    layout: "secondHandDetails",
-    components: {
-        breadcrumb,
-        collect,
-        baseMsg,
-        mapTab
-    },
-    async fetch(context) {
-        let houseDetails = await axios.get(api.paramToUrl(api.used_detail, {id: context.route.params.id}))
-        context.store.commit("setHouseDetails", houseDetails.data.data)
-    },
-    data() {
-        return {}
-    },
+    export default {
+        layout: "secondHandDetails",
+        components: {
+            breadcrumb,
+            collect,
+            baseMsg,
+            mapTab
+        },
+        async fetch(context) {
+            let houseDetails = await axios.get(api.paramToUrl(api.used_detail, {id: context.route.params.id}))
+            context.store.commit("setHouseDetails", houseDetails.data.data)
+        },
+        data() {
+            return {}
+        },
 
-    computed: {...mapState(["houseDetails", "userid"])},
-    methods: {
-        getData() {
-            axios.get(api.paramToUrl(api.used_detail, {id: this.$route.params.id})).then(res => {
-                this.setHouseDetails(res.data.data);
-            })
-        }, async getHouseData() {
-            let params = {id: this.$route.params.id}
-            if (this.userid) {
-                params.userid = this.userid
-            }
-            let houseDetails = await axios.get(api.paramToUrl(api.used_detail, params))
-            this.$store.commit("setHouseDetails", houseDetails.data.data)
-        }, ...mapMutations(["setHouseDetails"])
-    },
-    created() {
-        this.getHouseData();
-        this.getData()
-        console.log(this.houseDetails)
-    },
-}</script>
+        computed: {...mapState(["houseDetails", "userid"])},
+        methods: {
+            getData() {
+                axios.get(api.paramToUrl(api.used_detail, {id: this.$route.params.id})).then(res => {
+                    this.setHouseDetails(res.data.data);
+                })
+            },
+            async getHouseData() {
+                let params = {id: this.$route.params.id}
+                if (this.userid) {
+                    params.userid = this.userid
+                }
+                let houseDetails = await axios.get(api.paramToUrl(api.used_detail, params))
+                this.$store.commit("setHouseDetails", houseDetails.data.data)
+            },
+            ...mapMutations(["setHouseDetails"])
+        },
+        created() {
+            this.getHouseData();
+            this.getData()
+            console.log(this.houseDetails)
+        },
+    }</script>
 <style scoped>
     .content {
         width: 1100px;

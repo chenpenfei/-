@@ -252,10 +252,9 @@
                     <span style="color: #000"> 呼和浩特
                         </span>房源
                 </div>
-
                 <div class="specific" v-for="(item,index) in clientArr" :key="index">
-
-                    <nuxt-link :to="{name: 'secondDetails', params: {id: item.id}}" class="item-img fll">
+                    <nuxt-link :to="'/secondDetails?id='+item.id "
+                               class="item-img fll">
                         <img :src="'http://www.fooju.cn'+item.pic">
                     </nuxt-link>
                     <div class="address">
@@ -522,6 +521,9 @@
             this.getData();
         },
         methods: {
+            msg(){
+              let item = el.querySelector(".")
+            },
             handleShow(isShow){
                 this.isShow = !this.isShow;
             },
@@ -586,10 +588,9 @@
                 axios.get(api.paramToUrl("api.php?s=Product/used_lists", params)).then(res => {
                     this.clientArr = res.data.data;
                     this.findCount = res.data.count;
-
                     this.pageCount = res.data.count;
-                    this.clientData = res.data.data;
-                    console.log(res.data);
+                    console.log(this.clientArr);
+                    // console.log(res.data);
 
                     loading.close()
                 }).catch(err => {
@@ -632,11 +633,11 @@
                     btn1.onclick= function(){
                         box.style.height = "auto";
                         let targetHeight = getComputedStyle(box).height;
-                        box.style.height= 0;
+                        box.style.height = 0;
                         box.offsetHeight;
                         box.style.height = targetHeight;
                     }
-                    btn2.onclick=function(){
+                    btn2.onclick = function(){
                         box.style.height = 0;
                     }
 
